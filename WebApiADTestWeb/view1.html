@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script>
+        $(function(){
+            $("#btnIn").click(function(e){
+                e.preventDefault();
+                var url = "http://localhost:10174/api/auth";
+                var data = $("#form1").serialize();
+                $.ajax({
+                    type:"post",
+                    url:url,
+                    data:data,
+                    xhrFields:{
+                        withCredentials: true
+                    },
+                    success:function(ans){
+                        console.log(ans);
+                        if(ans.Result)
+                        {
+                            setCookie("Authorization", ans.token,1); //存cookie
+                            window.location.href='view2.html';
+                        }
+                        else{
+                            alert("sorry,帳號密碼輸入錯誤");
+                        }
+                    }
+                })
+
+
+            })
+
+            function setCookie(cname, cvalue, exTime) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exTime*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = cname + "=" + cvalue + "; " + expires;
+            }
+        })
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <input name="name">
+        <input name=pwd>
+        <button id=btnIn>submit</button>
+    </form>
+</body>
+</html>

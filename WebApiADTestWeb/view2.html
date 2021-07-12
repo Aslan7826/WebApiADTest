@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script>
+            $.extend($,{
+                Jget:function(url,data,succ){
+                    var token = readCookie("Authorization");
+                    
+
+
+                    return $.ajax({
+                                url: url,
+                                type: 'GET',
+                                headers: {
+                                    Authorization: 'Bearer ' + token
+                                },
+                                dataType: 'json',
+                                data:data,
+                                success: succ,
+                                error: function(data){
+                                    window.location.href='view1.html';
+                                }
+                            });
+                }
+            })
+            
+            function readCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+    </script>
+    <script>
+        $(function(){
+            var url = "http://localhost:10174/api/home?name=123";   
+            
+            $.Jget(url,0,function(data){
+                $('#result').text(JSON.stringify(data));
+            })
+        })
+
+    </script>
+</head>
+<body>
+    
+    <div id="result">
+
+    </div>
+</body>
+</html>
